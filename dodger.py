@@ -1,5 +1,7 @@
+#import pygame, random= for example if we want obstacles appears randomly
 import pygame, random, sys
 from pygame.locals import * #importing everyting from this place
+
 
 WINDOWWIDTH = 600 #something in upper letter -> is from the python game. Those are the defined variables
 WINDOWHEIGHT = 600
@@ -10,25 +12,25 @@ BADDIEMINSIZE = 10 #baddie means your ennemy, here the ranges are set
 BADDIEMAXSIZE = 40
 BADDIEMINSPEED = 1
 BADDIEMAXSPEED = 8 #if you wanna change that, change in the documentation if possible
-ADDNEWBADDIERATE = 6
+ADDNEWBADDIERATE = 6 
 PLAYERMOVERATE = 5 #player speed -> "how many pixels your player is moving"
 
-def terminate():
+def terminate(): #finish your game 
     pygame.quit()
     sys.exit() #clens everything in case the player closes 
 
 def waitForPlayerToPressKey(): #name your functions like that
     while True:
-        for event in pygame.event.get():
+        for event in pygame.event.get(): #loop. we look every event 
             if event.type == QUIT:
                 terminate()
             if event.type == KEYDOWN:
-                if event.key == K_ESCAPE: # Pressing ESC quits.
+                if event.key == K_ESCAPE: # Pressing ESC quits. They give up?
                     terminate()
                 return
 
-def playerHasHitBaddie(playerRect, baddies): #define the size of players
-    for b in baddies:
+def playerHasHitBaddie(playerRect, baddies): #define the size of players, baddies=library of ennemy 
+    for b in baddies: #we want to see if they have collisions 
         if playerRect.colliderect(b['rect']):
             return True
     return False
@@ -40,7 +42,7 @@ def drawText(text, font, surface, x, y):
     surface.blit(textobj, textrect)
 
 # Set up pygame, the window, and the mouse cursor.
-pygame.init()
+pygame.init() #inalize the function 
 mainClock = pygame.time.Clock() #clock for the game -> calculate the speed for elements etc ...
 windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 pygame.display.set_caption('Dodger')
@@ -50,8 +52,8 @@ pygame.mouse.set_visible(False) #see if you want the player to use the mouse or 
 font = pygame.font.SysFont(None, 48)
 
 # Set up sounds.
-gameOverSound = pygame.mixer.Sound('gameover.wav')
-pygame.mixer.music.load('background.mid')
+gameOverSound = pygame.mixer.Sound('gameover.wav') 
+pygame.mixer.music.load('background.mid') #in our file, we use load function 
 
 # Set up images.
 playerImage = pygame.image.load('player.png')
