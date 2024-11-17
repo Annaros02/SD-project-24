@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
         self.rect.x = 20  # Initial horizontal position
         self.rect.y = 500  # Initial vertical position (ground level)
         self.velocityY = 0  # Vertical speed for jumping and falling
-        self.jumpStrength = -20  # Initial upward force when jumping
+        self.jumpStrength = 0  # Initial upward force when jumping
         self.gravity = 1  # Gravity force applied to the player
         self.isJumping = False  # Track if the player is currently jumping
 
@@ -33,3 +33,4 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
             self.rect.y = 500  # Ensure the player stays on the ground
             self.isJumping = False  # Reset jumping state
             self.velocityY = 0  # Reset vertical speed
+
