@@ -1,8 +1,17 @@
 import pygame, random, sys
 from classgame import Game  # Import the Game class from the classgame file
 from pygame.locals import *  # Import Pygame constants and functions
+from classlevelmanagement import LevelManager # Import the LevelManager class from the classlevelmanagement file
+from classprojectile import Projectile # Import the Projectile class from the classprojectile file
+from classenemy import Enemy # Import the Enemy class from the classenemy file
 
-
+BACKGROUNDCOLOR = (0, 0, 0)  # Background color for the screen (black)
+WINDOWWIDTH = 1080  # Width of the game window
+WINDOWHEIGHT = 720  # Height of the game window
+GREEN = (0, 100, 0)  # Green color 
+WHITE = (255, 255, 255)  # White color 
+BLACK = (0,0,0)# Black color 
+ORANGE = (255, 128, 0)# Orange color 
 
 # Constants for colors and window dimensions
 # Function to draw text with a background for better visibility
@@ -12,18 +21,6 @@ def drawTextWithBackground(text, font, surface, x, y, text_color, bg_color):
     pygame.draw.rect(surface, bg_color, textrect.inflate(20, 10))  # Draw a background rectangle with padding
     surface.blit(textobj, textrect)  # Draw the text on the specified surface
 
-class LevelManager:
-    def __init__(self):
-        self.level = 1  # Initial level
-
-    def update_level(self, score):
-        # Update level based on score (1 level every 1000 points)
-        self.level = (score // 1000) + 1
-
-    def get_level(self):
-        return self.level
-
-# Function to display a level-up message and pause the game
 # Function to display a level-up message and pause the game
 def display_level_message(level):
     # Clear the screen and display the background
@@ -53,49 +50,6 @@ def display_level_message(level):
     
     # Pause for 3 seconds
     pygame.time.delay(3000)
-
-
-
-class Projectile(pygame.sprite.Sprite):
-    def __init__(self, x, y, speed):
-        super().__init__()
-        self.image = pygame.image.load("ninjastar.png")  # Load projectile image
-        self.image = pygame.transform.scale(self.image, (30, 30))  # Resize if needed
-        self.rect = self.image.get_rect()
-        self.rect.x = x  # Start at the player's position
-        self.rect.y = y
-        self.speed = speed  # Horizontal speed of the projectile
-
-    def update(self):
-        self.rect.x += self.speed  # Move horizontally
-        if self.rect.x > WINDOWWIDTH:  # Remove if off-screen
-            self.kill()
-
-
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((50, 50))  # Example enemy size
-        self.image.fill((255, 0, 0))  # Red color for the enemy
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randint(1080, 1280)  # Spawn off-screen to the right
-        self.rect.y = 500  # Ground level
-        self.speed = 5  # Speed of the enemy
-
-    def update(self):
-        self.rect.x -= self.speed  # Move enemy to the left
-        if self.rect.x < -50:  # Remove enemy if it moves off-screen
-            self.kill()
-
-
-
-BACKGROUNDCOLOR = (0, 0, 0)  # Background color for the screen (black)
-WINDOWWIDTH = 1080  # Width of the game window
-WINDOWHEIGHT = 720  # Height of the game window
-GREEN = (0, 100, 0)  # Green color 
-WHITE = (255, 255, 255)  # White color 
-BLACK = (0,0,0)
-ORANGE = (255, 128, 0)
 
 # Initialize Pygame
 pygame.init()
@@ -169,7 +123,6 @@ def show_start_screen():
 show_start_screen()  # Call the function to show the starting screen
 waitForPlayerToPressKey()  # Wait for the player to press a key
 
-
 topScore = 0  # Initialize the top score
 game = Game()  # Create an instance of the Game class
 running = True  # Set the initial state of the game
@@ -184,23 +137,26 @@ projectiles = pygame.sprite.Group()
 
 enemy_spawned = False
 last_processed_level=0
+#drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
+#scorerect = Rect(160,25, 100, 100)
+#pygame.draw.rect(windowSurface, BLACK, scorerect.inflate(20, 10))  # Draw a background rectangle with padding
+
 # Main game loop
 while True:  # Main game loop
     # Set up the start of a new game
     score = 0  # Reset score for each game
-    level_manager = LevelManager()  # Reset level manager for each game
+    # level_manager = LevelManager()  # Reset level manager for each game
+    level_manager.reset_level()
     pygame.mixer.music.play(-1, 0.0)  # Start background music (-1 means it loops indefinitely)
     
     # Variable to track the current level
     current_level = level_manager.get_level()
-    
     # Game loop
     while running:
+        
         score += 1  # Increase score each frame
         level_manager.update_level(score)  # Update level based on the current score
         new_level = level_manager.get_level()  # Get the updated level
-        
-        # Check if a new level has been reached
         if new_level > current_level:
             current_level = new_level  # Update the current level
             if current_level == 5:
@@ -222,7 +178,7 @@ while True:  # Main game loop
                     game.player.velocityX = 20  # Set player speed for Level 2
                     game.player.jumpStrength= -25  # increase jump strength
                     if not enemy_spawned:
-                            new_enemy = Enemy()  # Create a new enemy
+                            enemyimage = "enemy1.png"  # Path to your enemy image                            new_enemy = Enemy(enemyimage)  # Create a new enemy
                             enemies.add(new_enemy)  # Add the enemy to the group
                             enemy_spawned = True
 
@@ -232,10 +188,6 @@ while True:  # Main game loop
     
                 last_processed_level = current_level  # Update last processed level        
                 
- 
-        
-
-
 
         windowSurface.blit(background, (0, 0))  # Draw the background
         game.player.apply_gravity()  # Apply gravity to the player
@@ -276,12 +228,10 @@ while True:  # Main game loop
             elif event.type == pygame.KEYUP:  # If a key is released
                 game.pressed[event.key] = False  # Register the key as released
 
-
         score+=10
         # Draw score and level on the screen
         # Draw score with a background
         drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
-
         
         # Adjusted position for the level counter (top-right corner)
         level_text_x = WINDOWWIDTH - 160  # Position near the right edge of the window
@@ -291,8 +241,6 @@ while True:  # Main game loop
         pygame.display.update()  # Update display to show the score and level
 
         mainClock.tick(FSP)  # Set the frame rate to limit the game speed
-
-
 
     # Stop the game and show the "Game Over" screen
     pygame.mixer.music.stop()

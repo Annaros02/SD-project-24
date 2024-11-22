@@ -1,11 +1,11 @@
 import pygame
 import random
 
-class enemy(pygame.sprite.Sprite):
-    def __init__(self):
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, enemyimage):
         super().__init__()
-        self.image = pygame.Surface((50, 50))  # Example enemy size
-        self.image.fill((255, 0, 0))  # Red color for the enemy
+        self.image = pygame.image.load(enemyimage)  # Load the image
+        self.image = pygame.transform.scale(self.image, (50, 50))  # Resize to desired dimensions (width, height)
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(1080, 1280)  # Spawn off-screen to the right
         self.rect.y = 500  # Ground level

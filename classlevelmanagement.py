@@ -1,5 +1,4 @@
 import pygame
-import w
 
 class LevelManager:
     def __init__(self):
@@ -11,3 +10,6 @@ class LevelManager:
 
     def get_level(self):
         return self.level
+    
+    def reset_level(self):
+        self.level = 1

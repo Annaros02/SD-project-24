@@ -1,5 +1,6 @@
 
 import pygame
+WINDOWWIDTH = 1080
 
 class Projectile(pygame.sprite.Sprite):
     def __init__(self, x, y, speed):
