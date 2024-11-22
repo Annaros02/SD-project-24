@@ -178,7 +178,8 @@ while True:  # Main game loop
                     game.player.velocityX = 20  # Set player speed for Level 2
                     game.player.jumpStrength= -25  # increase jump strength
                     if not enemy_spawned:
-                            enemyimage = "enemy1.png"  # Path to your enemy image                            new_enemy = Enemy(enemyimage)  # Create a new enemy
+                             # Path to your enemy image                          
+                            new_enemy = Enemy(enemyimage="enemy1.png", width=150, height=150)  # Create a new enemy
                             enemies.add(new_enemy)  # Add the enemy to the group
                             enemy_spawned = True
 
@@ -251,3 +252,4 @@ while True:  # Main game loop
     pygame.display.update()
     waitForPlayerToPressKey()
     gameOverSound.stop()
+
