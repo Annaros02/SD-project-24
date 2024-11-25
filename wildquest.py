@@ -217,7 +217,11 @@ while True:  # Main game loop
             if game.player.rect.x + game.player.rect.width < WINDOWWIDTH:
                  game.player.move_right() #Move player to the right 
             
-        
+        if game.pressed.get(pygame.K_LEFT):
+             if game.player.rect.x > 0:
+                  game.player.move_left()
+
+
         # Handle running and jumping simultaneously 
         if game.pressed.get(pygame.K_SPACE): #If the player is jumping
              game.player.jump() #Make the player jump   

@@ -21,6 +21,11 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
         #Always allow horizontal movement 
         self.rect.x += self.velocityX
 
+    def move_left(self):
+        if self.rect.x > 0:  # Empêche de dépasser la bordure gauche
+            self.rect.x -= self.velocityX
+
+
     def jump(self):
         if not self.isJumping:  # Only jump if the player is not already jumping
             self.velocityY = self.jumpStrength  # Apply upward jump force
