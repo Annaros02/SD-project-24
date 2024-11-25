@@ -15,21 +15,26 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
         self.jumpStrength = 0  # Initial upward force when jumping
         self.gravity = 1  # Gravity force applied to the player
         self.isJumping = False  # Track if the player is currently jumping
+        
 
     def move_right(self):
-        self.rect.x += self.velocityX  # Move the player to the right
+        #Always allow horizontal movement 
+        self.rect.x += self.velocityX
 
     def jump(self):
         if not self.isJumping:  # Only jump if the player is not already jumping
-            self.velocityY = self.jumpStrength  # Apply initial jump force
+            self.velocityY = self.jumpStrength  # Apply upward jump force
             self.isJumping = True  # Set jumping state to true
-
+            
     def apply_gravity(self):
         self.rect.y += self.velocityY  # Apply vertical speed to the player's position
         self.velocityY += self.gravity  # Increase vertical speed due to gravity
+
 
         # Check if the player has reached the ground
         if self.rect.y >= 500:  # Ground level position
             self.rect.y = 500  # Ensure the player stays on the ground
             self.isJumping = False  # Reset jumping state
             self.velocityY = 0  # Reset vertical speed
+            
+    

@@ -5,6 +5,7 @@ from classlevelmanagement import LevelManager # Import the LevelManager class fr
 from classprojectile import Projectile # Import the Projectile class from the classprojectile file
 from classenemy import Enemy # Import the Enemy class from the classenemy file
 
+
 BACKGROUNDCOLOR = (0, 0, 0)  # Background color for the screen (black)
 WINDOWWIDTH = 1080  # Width of the game window
 WINDOWHEIGHT = 720  # Height of the game window
@@ -102,11 +103,13 @@ start_background = pygame.image.load("background1.png")  # Load the start backgr
 start_image = pygame.image.load("start_image.png")  # Load the start image of the character
 start_image = pygame.transform.smoothscale(start_image, (220, 320))  # Scale player image
 
+
 #Function to display the starting screen
 def show_start_screen():
     # Draw the starting background
     windowSurface.blit(start_background, (0, 0))  # Fill the screen with the starting background image
     
+
     # Draw the start character image on top of the background
     start_image_rect = start_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT // 1.3))  # Center the character image
     windowSurface.blit(start_image, start_image_rect)  # Draw the character image
@@ -123,6 +126,7 @@ def show_start_screen():
 show_start_screen()  # Call the function to show the starting screen
 waitForPlayerToPressKey()  # Wait for the player to press a key
 
+
 topScore = 0  # Initialize the top score
 game = Game()  # Create an instance of the Game class
 running = True  # Set the initial state of the game
@@ -130,16 +134,21 @@ running = True  # Set the initial state of the game
 # Initialize the LevelManager
 level_manager = LevelManager()
 
+
+
+
 # Initialize an enemy group
 enemies = pygame.sprite.Group()
 projectiles = pygame.sprite.Group()
 # Variable to track if the speed has already increased and enemy introduced
+
 
 enemy_spawned = False
 last_processed_level=0
 #drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
 #scorerect = Rect(160,25, 100, 100)
 #pygame.draw.rect(windowSurface, BLACK, scorerect.inflate(20, 10))  # Draw a background rectangle with padding
+
 
 # Main game loop
 while True:  # Main game loop
@@ -189,26 +198,30 @@ while True:  # Main game loop
     
                 last_processed_level = current_level  # Update last processed level        
                 
+        windowSurface.blit(background, (0, 0)) #Draw the background
 
-        windowSurface.blit(background, (0, 0))  # Draw the background
+
+        
         game.player.apply_gravity()  # Apply gravity to the player
-
-        # Draw the player character
+                 
         windowSurface.blit(game.player.image, game.player.rect)  # Draw the player on the screen
         enemies.update()  # Update all enemies
         enemies.draw(windowSurface)  # Draw enemies on the screen
         projectiles.update()
         projectiles.draw(windowSurface)
-
-
-        # Check if the right arrow key is pressed and if the player is within screen bounds
-        if game.pressed.get(pygame.K_RIGHT) and 0 < game.player.rect.x + game.player.rect.width < WINDOWWIDTH:
-            game.player.move_right()  # Move player to the right
         
-        # Check if the space key is pressed and if the player is not already jumping
-        elif game.pressed.get(pygame.K_SPACE) and not game.player.isJumping:
-            game.player.jump()  # Make the player jump
-    
+        
+
+        
+        if game.pressed.get(pygame.K_RIGHT): #if the right arrow key is pressed 
+            if game.player.rect.x + game.player.rect.width < WINDOWWIDTH:
+                 game.player.move_right() #Move player to the right 
+            
+        
+        # Handle running and jumping simultaneously 
+        if game.pressed.get(pygame.K_SPACE): #If the player is jumping
+             game.player.jump() #Make the player jump   
+
         pygame.display.flip()  # Refresh the screen
 
         # Handle events
@@ -228,6 +241,8 @@ while True:  # Main game loop
 
             elif event.type == pygame.KEYUP:  # If a key is released
                 game.pressed[event.key] = False  # Register the key as released
+
+        
 
         score+=10
         # Draw score and level on the screen
