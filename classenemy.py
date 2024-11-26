@@ -3,13 +3,13 @@ import random
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, enemyimage, width, height):
-        """
-        Initialize the enemy sprite.
         
-        :param enemyimage: Path to the enemy image file.
-        :param width: Optional width to resize the enemy image.
-        :param height: Optional height to resize the enemy image.
-        """
+        #Initialize the enemy sprite.
+        
+        #:param enemyimage: Path to the enemy image file.
+        #:param width: Optional width to resize the enemy image.
+        #:param height: Optional height to resize the enemy image.
+        
         super().__init__()
         
         # Load the image and ensure a fresh instance is used each time
@@ -30,9 +30,9 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = 5
 
     def update(self):
-        """
-        Update the enemy's position and remove it if it moves off-screen.
-        """
+        
+        #Update the enemy's position and remove it if it moves off-screen.
+        
         self.rect.x -= self.speed  # Move the enemy to the left
         
         # Remove the enemy if it moves off the left side of the screen
