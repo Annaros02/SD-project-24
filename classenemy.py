@@ -13,7 +13,8 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__()
         
         # Load the image and ensure a fresh instance is used each time
-        self.image = pygame.image.load(enemyimage).convert_alpha()
+        self.image = pygame.image.load(enemyimage)
+        self.image = self.image.convert_alpha()
         
         # Resize the image if width and height are provided
         if width and height:
