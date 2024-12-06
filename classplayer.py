@@ -41,5 +41,5 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
             self.rect.y = 500  # Ensure the player stays on the ground
             self.isJumping = False  # Reset jumping state
             self.velocityY = 0  # Reset vertical speed
-            
     
+ 
