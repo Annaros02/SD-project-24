@@ -2,7 +2,6 @@ import pygame
 import random
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemyimage, width, height, base_speed=5, speed_variation=3):
         
         #Initialize the enemy sprite.
         
@@ -28,7 +27,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = 500  # Ground level
         
         # Movement speed
-        self.speed = base_speed + random.randint(0, speed_variation)
+        self.speed = base_speed + random.randint
 
     def update(self):
         
