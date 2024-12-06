@@ -112,29 +112,18 @@ def waitForPlayerToPressKey():
                 return  # Exit the function and start the game
 
 def spawn_enemies(level, enemy_group, enemy_images, width, height):
-    """
-    Spawns a specified number of enemies, randomly selecting their image and X position.
-
-    Args:
-        level (int): Number of enemies to spawn.
-        enemy_group (pygame.sprite.Group): The group to add enemies to.
-        enemy_images (list): List of enemy image paths.
-        width (int): Width of the enemy image.
-        height (int): Height of the enemy image.
-    """
     
     enemy_group.empty()  # Clear existing enemies
     #spawn_y = 500  # Fixed vertical position for all enemies
 
     for i in range(level):  # Spawn enemies equal to the level number
-        print(f"Spawn enemies iteration: {i}")
         random_enemy_image = random.choice(enemy_images)  # Randomly select an enemy image
         #spawn_x = random.randint(1080, 1280)  # Random X spawn position off-screen to the right
         #new_enemy = Enemy(random_enemy_image, width, height, spawn_y)
         new_enemy = Enemy(random_enemy_image, width, height)
         #new_enemy.rect.x = spawn_x  # Set the enemy's initial X-coordinate
         enemy_group.add(new_enemy)
-        print(f"Created new enemy for level {level}")
+ 
         
     return enemy_group
 
@@ -209,9 +198,6 @@ projectiles = pygame.sprite.Group()
 
 enemy_spawned = False
 last_processed_level=0
-#drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
-#scorerect = Rect(160,25, 100, 100)
-#pygame.draw.rect(windowSurface, BLACK, scorerect.inflate(20, 10))  # Draw a background rectangle with padding
 
 
 vision_range = 20
@@ -233,7 +219,7 @@ while True:  # Main game loop
     current_level = level_manager.get_level()
     
     enemy_spawn_time = 0  # Track time for incremental enemy spawning
-    time_between_spawns = 2000  # Spawn a new enemy every 2 seconds (adjust as needed)
+    time_between_spawns = 2000  # Spawn a new enemy every 2 seconds 
 
 
     # Game loop
@@ -244,7 +230,6 @@ while True:  # Main game loop
         if new_level > current_level:
             current_level = new_level  # Update the current level
             enemies.empty()  # Clear all enemies from the previous level
-            print(f"*********Current level: {current_level}********")
             display_level_message(new_level)  # Display level-up message and pause
 
             # Reset the timer to control enemy spawns for this level
@@ -267,31 +252,31 @@ while True:  # Main game loop
             new_enemy = Enemy(random_enemy_image, 150, 150)  # Adjust dimensions as needed
             enemies.add(new_enemy)
             enemy_spawn_time = current_time  # Reset the spawn timer
-            print(f"Spawned a new enemy! Total enemies: {len(enemies)}")
+
         
 
         if current_level > last_processed_level:
             if current_level == 1 and len(enemies) < 1:
-                game.player.jumpStrength = -10
+                game.player.jumpStrength = -20
                 new_enemies = spawn_enemies(1, enemies, enemy_images, 150, 150)  # Level 1: 1 enemy
                 enemies = new_enemies
-                print(f"Current enemies: {len(enemies)}")
+             
             elif current_level == 2 and len(enemies) < 2:
                 game.player.velocityX = 20
-                game.player.jumpStrength = -25
+                game.player.jumpStrength = -20
                 new_enemies = spawn_enemies(2, enemies, enemy_images, 150, 150)  # Level 2: 2 enemies
                 enemies = new_enemies
-                print(f"Current enemies: {len(enemies)}")
+                
             elif current_level == 3 and len(enemies) < 3:
                 game.player.velocityX = 50
                 new_enemies = spawn_enemies(3, enemies, enemy_images, 150, 150)  # Level 3: 3 enemies
                 enemies = new_enemies 
-                print(f"Current enemies: {len(enemies)}")
+            
             elif current_level == 4 and len(enemies) < 4:
                 game.player.velocityX = 70
                 new_enemies = spawn_enemies(4, enemies, enemy_images, 150, 150)  # Level 4: 4 enemies
                 enemies = new_enemies   
-                print(f"Current enemies: {len(enemies)}")   
+                  
                 
         windowSurface.blit(background, (0, 0)) #Draw the background
         
@@ -312,6 +297,16 @@ while True:  # Main game loop
             for hit in collisions:
                 score += 50
                 pickUpSound.play()
+
+                # Check if the enemy sends a projectile at the player's position upon death
+                if isinstance(hit, Enemy):  # Ensure it's an enemy
+                    new_projectile = hit.shoot_projectile_at_player(game.player.rect.centerx, game.player.rect.centery)
+                    projectiles.add(new_projectile)  # Add the enemy's projectile to the game
+        # Detect collisions between enemy projectiles and the player
+        if pygame.sprite.spritecollide(game.player, projectiles, True):  # True to remove the projectile
+            running = False  # End the game if the player is hit
+            pygame.mixer.music.stop()
+            gameOverSound.play()
 
         if pygame.sprite.spritecollide(game.player, enemies, False):  # False pour garder les ennemis
             running = False  # Arrêter la boucle principale
@@ -351,9 +346,7 @@ while True:  # Main game loop
                     game.player.move_left()
 
         for e in enemies :
-            print(f"Enemy {e} position: {e.rect.x}")
             if PlayerlsSeen(game.player.rect.x,game.player.rect.y, e.rect.x,e.rect.y, vision_range) :
-                print("Player was SEEN!")
                 if e.speed < speed_limit :
                     e.speed += 3
                     counter += 12
@@ -403,13 +396,29 @@ while True:  # Main game loop
 
         mainClock.tick(FSP)  # Set the frame rate to limit the game speed
 
-    # Stop the game and show the "Game Over" screen
-    pygame.mixer.music.stop()
-    gameOverSound.play()
-    windowSurface.blit(background, (0, 0))
-    drawText('GAME OVER', Title_design, windowSurface, (WINDOWWIDTH / 2), (WINDOWHEIGHT / 4), GREEN)  # Draw title
-    drawText('Press a key to start again !', Score_design, windowSurface, (WINDOWWIDTH / 2) - 15, (WINDOWHEIGHT / 2) + 50, WHITE) 
-    pygame.display.update()
-    waitForPlayerToPressKey()
-    gameOverSound.stop()
+    if pygame.sprite.spritecollide(game.player, enemies, False):  # False pour garder les ennemis
+            running = False  # Arrêter la boucle principale
+            pygame.mixer.music.stop()  # Arrêter la musique de fond
+            gameOverSound.play()  # Jouer le son "Game Over"
+    
+            # Afficher l'écran de "Game Over"
+            windowSurface.blit(background, (0, 0))
 
+            # Charger l'image du personnage mort
+            dead_player_image = pygame.image.load("dead_player.png").convert_alpha()
+            dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))  # Ajuster la taille si nécessaire
+
+            # Positionner l'image au centre vers le bas de l'écran
+            dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))  # Ajustez la hauteur si besoin
+            windowSurface.blit(dead_player_image, dead_player_rect)  # Afficher l'image du personnage mort
+
+
+        
+            drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
+            drawText('Press any key to quit the game !', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
+            pygame.display.update()
+
+            # Attendre que le joueur appuie sur une touche
+            waitForPlayerToPressKey()
+            gameOverSound.stop()
+            break  # Sortir de la boucle principale pour réinitialiser le jeu
