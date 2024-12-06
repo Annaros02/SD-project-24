@@ -5,8 +5,8 @@ class LevelManager:
         self.level = 1  # Initial level
 
     def update_level(self, score):
-        # Update level based on score (1 level every 1000 points)
-        self.level = (score // 1000) + 1
+        # Update level based on score (1 level every 500 points)
+        self.level = (score // 500) + 1
 
     def get_level(self):
         return self.level
