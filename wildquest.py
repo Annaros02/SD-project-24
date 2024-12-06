@@ -239,7 +239,6 @@ while True:  # Main game loop
     # Game loop
     while running:
         
-        score += 1  # Increase score each frame
         level_manager.update_level(score)  # Update level based on the current score
         new_level = level_manager.get_level()  # Get the updated level
         if new_level > current_level:
@@ -314,6 +313,34 @@ while True:  # Main game loop
                 score += 50
                 pickUpSound.play()
 
+        if pygame.sprite.spritecollide(game.player, enemies, False):  # False pour garder les ennemis
+            running = False  # Arrêter la boucle principale
+            pygame.mixer.music.stop()  # Arrêter la musique de fond
+            gameOverSound.play()  # Jouer le son "Game Over"
+    
+            # Afficher l'écran de "Game Over"
+            windowSurface.blit(background, (0, 0))
+
+            # Charger l'image du personnage mort
+            dead_player_image = pygame.image.load("dead_player.png").convert_alpha()
+            dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))  # Ajuster la taille si nécessaire
+
+            # Positionner l'image au centre vers le bas de l'écran
+            dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))  # Ajustez la hauteur si besoin
+            windowSurface.blit(dead_player_image, dead_player_rect)  # Afficher l'image du personnage mort
+
+
+        
+            drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
+            drawText('Press any key to quit the game !', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
+            pygame.display.update()
+
+            # Attendre que le joueur appuie sur une touche
+            waitForPlayerToPressKey()
+            gameOverSound.stop()
+            break  # Sortir de la boucle principale pour réinitialiser le jeu
+
+
             
         if game.pressed.get(pygame.K_RIGHT): #if the right arrow key is pressed 
             if game.player.rect.x + game.player.rect.width < WINDOWWIDTH:
@@ -363,7 +390,6 @@ while True:  # Main game loop
 
         
 
-        score+=10
         # Draw score and level on the screen
         # Draw score with a background
         drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
@@ -380,7 +406,7 @@ while True:  # Main game loop
     # Stop the game and show the "Game Over" screen
     pygame.mixer.music.stop()
     gameOverSound.play()
-    windowSurface.blit(0, (0, 0))
+    windowSurface.blit(background, (0, 0))
     drawText('GAME OVER', Title_design, windowSurface, (WINDOWWIDTH / 2), (WINDOWHEIGHT / 4), GREEN)  # Draw title
     drawText('Press a key to start again !', Score_design, windowSurface, (WINDOWWIDTH / 2) - 15, (WINDOWHEIGHT / 2) + 50, WHITE) 
     pygame.display.update()
