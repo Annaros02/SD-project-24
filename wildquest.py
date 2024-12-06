@@ -117,8 +117,9 @@ def show_start_screen():
     # Draw the title and instructions
     drawText('THE WILD QUEST', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, GREEN)
     drawText('Press SPACE to Jump !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 100, BLACK)
-    drawText("Press RIGHT Arrow to Move !", Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 150, BLACK)
-    drawText('Press a key to start !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) +200, GREEN)  # Positioned below the character image
+    drawText('Press RIGHT or LEFT Arrow to Move !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 150, BLACK)
+    drawText('Press B to Launch a Projectile !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 200, BLACK)
+    drawText('Press a key to start !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 250, GREEN)  # Positioned below all instructions
 
     pygame.display.update()  # Update the screen
 
