@@ -164,6 +164,24 @@ start_image = pygame.image.load("start_image.png")  # Load the start image of th
 start_image = pygame.transform.smoothscale(start_image, (220, 320))  # Scale player image
  
 
+#Function to display the starting screen
+def show_start_screen():
+    # Draw the starting background
+    windowSurface.blit(start_background, (0, 0))  # Fill the screen with the starting background image
+    
+
+    # Draw the start character image on top of the background
+    start_image_rect = start_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT // 1.3))  # Center the character image
+    windowSurface.blit(start_image, start_image_rect)  # Draw the character image
+
+    # Draw the title and instructions
+    drawText('THE WILD QUEST', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, GREEN)
+    drawText('Press SPACE to Jump !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 100, BLACK)
+    drawText("Press RIGHT Arrow to Move !", Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 150, BLACK)
+    drawText('Press a key to start !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) +200, GREEN)  # Positioned below the character image
+
+    pygame.display.update()  # Update the screen
+
 # Display the "Start" screen and wait for player input
 show_start_screen()  # Call the function to show the starting screen
 waitForPlayerToPressKey()  # Wait for the player to press a key
