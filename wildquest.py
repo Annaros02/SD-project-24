@@ -4,6 +4,7 @@ from pygame.locals import *  # Import Pygame constants and functions
 from classlevelmanagement import LevelManager # Import the LevelManager class from the classlevelmanagement file
 from classprojectile import Projectile # Import the Projectile class from the classprojectile file
 from classenemy import Enemy # Import the Enemy class from the classenemy file
+from classtree import TreeObstacle
 
 
 BACKGROUNDCOLOR = (0, 0, 0)  # Background color for the screen (black)
@@ -193,6 +194,9 @@ level_manager = LevelManager()
 # Initialize an enemy group
 enemies = pygame.sprite.Group()
 projectiles = pygame.sprite.Group()
+trees = pygame.sprite.Group()  # Groupe pour les troncs
+tree_spawn_time = pygame.time.get_ticks()  # Timer pour le spawn des troncs
+
 # Variable to track if the speed has already increased and enemy introduced
 
 
@@ -253,7 +257,12 @@ while True:  # Main game loop
             enemies.add(new_enemy)
             enemy_spawn_time = current_time  # Reset the spawn timer
 
-        
+        current_time = pygame.time.get_ticks()
+        if current_time - tree_spawn_time > random.randint(3000, 5000):  # Spawn toutes les 3 à 5 secondes
+            new_tree = TreeObstacle("tree.png", WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un tronc
+            trees.add(new_tree)  # Ajoute le tronc au groupe
+            tree_spawn_time = current_time  # Réinitialise le timer
+
 
         if current_level > last_processed_level:
             if current_level == 1 and len(enemies) < 1:
@@ -287,6 +296,9 @@ while True:  # Main game loop
         enemies.draw(windowSurface)  # Draw enemies on the screen
         projectiles.update()
         projectiles.draw(windowSurface)
+        trees.update()  # Met à jour les positions des troncs
+        trees.draw(windowSurface)  # Dessine les troncs sur l’écran
+
         pygame.display.update()
 
 
