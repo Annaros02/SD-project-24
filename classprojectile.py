@@ -8,6 +8,7 @@ class Projectile(pygame.sprite.Sprite):
         self.image = pygame.image.load("ninjastar.png")  # Load projectile image
         self.image = pygame.transform.scale(self.image, (30, 30))  # Resize if needed
         self.rect = self.image.get_rect()
+        self.rect.inflate_ip(-10, -10)  # Rétrécit légèrement le rectangle de collision
         self.rect.x = x  # Start at the player's position
         self.rect.y = y
         self.speed = speed  # Horizontal speed of the projectile
