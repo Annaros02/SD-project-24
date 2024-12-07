@@ -7,14 +7,14 @@ class TreeObstacle(pygame.sprite.Sprite):
         # Charge l'image du tronc
         self.image = pygame.image.load(image_path).convert_alpha()
         # Redimensionne le tronc
-        self.image = pygame.transform.smoothscale(self.image, (150, 75))  # Taille ajustée
+        self.image = pygame.transform.smoothscale(self.image, (110, 110))  # Taille ajustée
         self.rect = self.image.get_rect()
         # Position initiale à droite de l'écran
         self.rect.x = window_width
         # Aligné au sol
         self.rect.y = ground_level - self.rect.height
         # Vitesse aléatoire
-        self.speed = random.randint(5, 10)
+        self.speed = random.randint(3, 6)
 
     def update(self):
         # Déplace le tronc vers la gauche

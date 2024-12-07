@@ -266,13 +266,13 @@ while True:  # Main game loop
 
         if current_level > last_processed_level:
             if current_level == 1 and len(enemies) < 1:
-                game.player.jumpStrength = -30
+                game.player.jumpStrength = -25
                 new_enemies = spawn_enemies(1, enemies, enemy_images, 150, 150)  # Level 1: 1 enemy
                 enemies = new_enemies
              
             elif current_level == 2 and len(enemies) < 2:
                 game.player.velocityX = 20
-                game.player.jumpStrength = -35
+                game.player.jumpStrength = -25
                 new_enemies = spawn_enemies(2, enemies, enemy_images, 150, 150)  # Level 2: 2 enemies
                 enemies = new_enemies
                 
