@@ -7,7 +7,7 @@ class TreeObstacle(pygame.sprite.Sprite):
         # Charge l'image du tronc
         self.image = pygame.image.load(image_path).convert_alpha()
         # Redimensionne le tronc
-        self.image = pygame.transform.smoothscale(self.image, (150, 75))  # Taille ajustée
+        self.image = pygame.transform.smoothscale(self.image, (150, 150))  # Taille ajustée
         self.rect = self.image.get_rect()
         # Position initiale à droite de l'écran
         self.rect.x = window_width
