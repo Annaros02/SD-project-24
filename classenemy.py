@@ -2,6 +2,10 @@ import pygame
 import random
 
 class Enemy(pygame.sprite.Sprite):
+<<<<<<< HEAD
+=======
+    def __init__(self, enemyimage, width, height, base_speed=8, speed_variation=2):
+>>>>>>> manon
         
         #Initialize the enemy sprite.
         

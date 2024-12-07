@@ -4,6 +4,7 @@ from pygame.locals import *  # Import Pygame constants and functions
 from classlevelmanagement import LevelManager # Import the LevelManager class from the classlevelmanagement file
 from classprojectile import Projectile # Import the Projectile class from the classprojectile file
 from classenemy import Enemy # Import the Enemy class from the classenemy file
+from classtree import TreeObstacle
 
 
 BACKGROUNDCOLOR = (0, 0, 0)  # Background color for the screen (black)
@@ -193,6 +194,9 @@ level_manager = LevelManager()
 # Initialize an enemy group
 enemies = pygame.sprite.Group()
 projectiles = pygame.sprite.Group()
+trees = pygame.sprite.Group()  # Groupe pour les troncs
+tree_spawn_time = pygame.time.get_ticks()  # Timer pour le spawn des troncs
+
 # Variable to track if the speed has already increased and enemy introduced
 
 
@@ -253,17 +257,22 @@ while True:  # Main game loop
             enemies.add(new_enemy)
             enemy_spawn_time = current_time  # Reset the spawn timer
 
-        
+        current_time = pygame.time.get_ticks()
+        if current_time - tree_spawn_time > random.randint(5000, 8000):  # Spawn toutes les 3 à 5 secondes
+            new_tree = TreeObstacle("tree.png", WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un tronc
+            trees.add(new_tree)  # Ajoute le tronc au groupe
+            tree_spawn_time = current_time  # Réinitialise le timer
+
 
         if current_level > last_processed_level:
             if current_level == 1 and len(enemies) < 1:
-                game.player.jumpStrength = -20
+                game.player.jumpStrength = -30
                 new_enemies = spawn_enemies(1, enemies, enemy_images, 150, 150)  # Level 1: 1 enemy
                 enemies = new_enemies
              
             elif current_level == 2 and len(enemies) < 2:
                 game.player.velocityX = 20
-                game.player.jumpStrength = -20
+                game.player.jumpStrength = -35
                 new_enemies = spawn_enemies(2, enemies, enemy_images, 150, 150)  # Level 2: 2 enemies
                 enemies = new_enemies
                 
@@ -287,8 +296,35 @@ while True:  # Main game loop
         enemies.draw(windowSurface)  # Draw enemies on the screen
         projectiles.update()
         projectiles.draw(windowSurface)
+        trees.update()  # Met à jour les positions des troncs
+        trees.draw(windowSurface)  # Dessine les troncs sur l’écran
+
         pygame.display.update()
 
+        if pygame.sprite.spritecollide(game.player, trees, False):  # Vérifie les collisions entre le joueur et les troncs
+            running = False  # Arrête la boucle principale
+            pygame.mixer.music.stop()  # Arrête la musique de fond
+            gameOverSound.play()  # Joue le son "Game Over"
+
+            # Affiche l'écran de "Game Over"
+            windowSurface.blit(background, (0, 0))
+
+            # Charge l'image du personnage mort
+            dead_player_image = pygame.image.load("dead_player.png").convert_alpha()
+            dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))  # Ajuste la taille si nécessaire
+
+            # Positionne l'image au centre vers le bas de l'écran
+            dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))  # Ajuste la hauteur si besoin
+            windowSurface.blit(dead_player_image, dead_player_rect)  # Affiche l'image du personnage mort
+
+            drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
+            drawText('Press any key to quit the game!', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
+            pygame.display.update()
+
+            # Attends que le joueur appuie sur une touche
+            waitForPlayerToPressKey()
+            gameOverSound.stop()
+            break  # Sort de la boucle principale pour réinitialiser le jeu
 
 
         # Detect collisions between projectiles and enemies

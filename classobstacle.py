@@ -7,7 +7,7 @@ class FallingObstacle(pygame.sprite.Sprite):
     def __init__(self, image_path, window_width, world_offset_x):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
-        self.image = pygame.transform.smoothscale(self.image, (70, 70))  # Adjust size
+        self.image = pygame.transform.smoothscale(self.image, (60, 60))  # Adjust size
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(world_offset_x, world_offset_x + window_width)  # Spawn based on world position
         self.rect.y = -self.rect.height  # Start above the screen
