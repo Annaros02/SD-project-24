@@ -298,15 +298,6 @@ while True:  # Main game loop
                 score += 50
                 pickUpSound.play()
 
-                # Check if the enemy sends a projectile at the player's position upon death
-                if isinstance(hit, Enemy):  # Ensure it's an enemy
-                    new_projectile = hit.shoot_projectile_at_player(game.player.rect.centerx, game.player.rect.centery)
-                    projectiles.add(new_projectile)  # Add the enemy's projectile to the game
-        # Detect collisions between enemy projectiles and the player
-        if pygame.sprite.spritecollide(game.player, projectiles, True):  # True to remove the projectile
-            running = False  # End the game if the player is hit
-            pygame.mixer.music.stop()
-            gameOverSound.play()
 
         if pygame.sprite.spritecollide(game.player, enemies, False):  # False pour garder les ennemis
             running = False  # Arrêter la boucle principale
