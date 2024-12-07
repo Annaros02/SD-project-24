@@ -258,7 +258,7 @@ while True:  # Main game loop
             enemy_spawn_time = current_time  # Reset the spawn timer
 
         current_time = pygame.time.get_ticks()
-        if current_time - tree_spawn_time > random.randint(3000, 5000):  # Spawn toutes les 3 à 5 secondes
+        if current_time - tree_spawn_time > random.randint(5000, 8000):  # Spawn toutes les 3 à 5 secondes
             new_tree = TreeObstacle("tree.png", WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un tronc
             trees.add(new_tree)  # Ajoute le tronc au groupe
             tree_spawn_time = current_time  # Réinitialise le timer
