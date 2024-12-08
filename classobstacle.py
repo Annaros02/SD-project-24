@@ -1,25 +1,19 @@
-#A MODIFIER APRES LES ENNEMIS SOIENT TERMINE
-
-import pygame 
+import pygame
 import random
 
-class FallingObstacle(pygame.sprite.Sprite):
-    def __init__(self, image_path, window_width, world_offset_x):
+class PineappleRain(pygame.sprite.Sprite):
+    def __init__(self, window_width, window_height):
         super().__init__()
-        self.image = pygame.image.load(image_path).convert_alpha()
-        self.image = pygame.transform.smoothscale(self.image, (60, 60))  # Adjust size
+        self.image = pygame.image.load("obstacles.pineapple.png")  # Assurez-vous d'avoir cette image
+        self.image = pygame.transform.scale(self.image, (50, 50))  # Ajustez la taille si nécessaire
         self.rect = self.image.get_rect()
-        self.rect.x = random.randint(world_offset_x, world_offset_x + window_width)  # Spawn based on world position
-        self.rect.y = -self.rect.height  # Start above the screen
-        self.speed = random.randint(3, 6)  # Random falling speed
+        self.rect.x = random.randint(0, window_width - self.rect.width)
+        self.rect.y = random.randint(-100, -50)  # Commence au-dessus de l'écran
+        self.window_height = window_height
 
-    def update(self, world_offset_x, scroll_speed):
         
-        #Adjust obstacle position based on scrolling
 
-        self.rect.x -= scroll_speed  # Move with the world
-        self.rect.y += self.speed  # Move downwards
-
-        # Remove if off-screen
-        if self.rect.y > 720 or self.rect.x < -self.rect.width or self.rect.x > WINDOWWIDTH + self.rect.width:
-            self.kill()
+    def update(self):
+        self.rect.y += 5  # La vitesse de descente des ananas
+        if self.rect.top > self.window_height:  # Si l'ananas sort de l'écran par le bas
+            self.kill()  # Supprimer l'ananas

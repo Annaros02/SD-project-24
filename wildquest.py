@@ -5,7 +5,7 @@ from classlevelmanagement import LevelManager # Import the LevelManager class fr
 from classprojectile import Projectile # Import the Projectile class from the classprojectile file
 from classenemy import Enemy # Import the Enemy class from the classenemy file
 from classtree import TreeObstacle
-
+from classobstacle import PineappleRain 
 
 BACKGROUNDCOLOR = (0, 0, 0)  # Background color for the screen (black)
 WINDOWWIDTH = 1080  # Width of the game window
@@ -157,26 +157,6 @@ start_image = pygame.image.load("start_image.png")  # Load the start image of th
 start_image = pygame.transform.smoothscale(start_image, (220, 320))  # Scale player image
  
 
-#Function to display the starting screen
-def show_start_screen():
-    # Draw the starting background
-    windowSurface.blit(start_background, (0, 0))  # Fill the screen with the starting background image
-    
-
-    # Draw the start character image on top of the background
-    start_image_rect = start_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT // 1.3))  # Center the character image
-    windowSurface.blit(start_image, start_image_rect)  # Draw the character image
-
-    
-    # Draw the title and instructions
-    drawText('THE WILD QUEST', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, GREEN)
-    drawText('Press SPACE to Jump !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 100, BLACK)
-    drawText('Press RIGHT Arrow to Move !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 150, BLACK)
-    drawText('Press B to Launch a Projectile!', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 200, BLACK)  # Added instruction for projectile
-    drawText('Press a key to start !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 250, GREEN)  # Adjusted position fo
-
-    pygame.display.update()  # Update the screen
-
 # Display the "Start" screen and wait for player input
 show_start_screen()  # Call the function to show the starting screen
 waitForPlayerToPressKey()  # Wait for the player to press a key
@@ -196,6 +176,8 @@ enemies = pygame.sprite.Group()
 projectiles = pygame.sprite.Group()
 trees = pygame.sprite.Group()  # Groupe pour les troncs
 tree_spawn_time = pygame.time.get_ticks()  # Timer pour le spawn des troncs
+pineapple_group = pygame.sprite.Group() 
+pineapple_spawn_time = pygame.time.get_ticks() #Timer pour contrôler la génération
 
 # Variable to track if the speed has already increased and enemy introduced
 
@@ -286,7 +268,14 @@ while True:  # Main game loop
                 new_enemies = spawn_enemies(4, enemies, enemy_images, 150, 150)  # Level 4: 4 enemies
                 enemies = new_enemies   
                   
-                
+        # Générer des ananas toutes les 800 ms
+        current_time = pygame.time.get_ticks()
+        if current_time - pineapple_spawn_time > 500 and len(pineapple_group) < 5:
+            pineapple = PineappleRain(WINDOWWIDTH, WINDOWHEIGHT)
+            pineapple_group.add(pineapple)
+            pineapple_spawn_time = current_time
+
+
         windowSurface.blit(background, (0, 0)) #Draw the background
         
         game.player.apply_gravity()  # Apply gravity to the player
@@ -298,6 +287,9 @@ while True:  # Main game loop
         projectiles.draw(windowSurface)
         trees.update()  # Met à jour les positions des troncs
         trees.draw(windowSurface)  # Dessine les troncs sur l’écran
+        pineapple_group.update() # Mettre à jour les postions des ananas 
+        pineapple_group.draw(windowSurface) # Dessiner les anans sur l'écran 
+
 
         pygame.display.update()
 
@@ -305,6 +297,11 @@ while True:  # Main game loop
             running = False  # Arrête la boucle principale
             pygame.mixer.music.stop()  # Arrête la musique de fond
             gameOverSound.play()  # Joue le son "Game Over"
+            
+        if pygame.sprite.spritecollide(game.player, pineapple_group, False):  # False pour garder les ananas
+            running = False  # Arrêtez le jeu si le joueur touche un ananas
+            pygame.mixer.music.stop()  # Arrêter la musique de fond
+            gameOverSound.play()  # Jouer le son de Game Over
 
             # Affiche l'écran de "Game Over"
             windowSurface.blit(background, (0, 0))
@@ -325,13 +322,14 @@ while True:  # Main game loop
             waitForPlayerToPressKey()
             gameOverSound.stop()
             break  # Sort de la boucle principale pour réinitialiser le jeu
+        
 
 
         # Detect collisions between projectiles and enemies
         collisions = pygame.sprite.groupcollide(projectiles, enemies, True, True)
         if collisions:
             for hit in collisions:
-                score += 50
+                score += 100
                 pickUpSound.play()
 
 
@@ -351,7 +349,7 @@ while True:  # Main game loop
             dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))  # Ajustez la hauteur si besoin
             windowSurface.blit(dead_player_image, dead_player_rect)  # Afficher l'image du personnage mort
 
-
+ 
         
             drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
             drawText('Press any key to quit the game !', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
