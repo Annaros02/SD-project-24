@@ -24,7 +24,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         
         # Set initial spawn position
-        self.rect.x = random.randint(1080, 1280)  # Spawn off-screen to the right
+        self.rect.x = random.randint(1280, 1480)  # Spawn off-screen to the right
         self.rect.y = 500  # Ground level
         
         # Movement speed
