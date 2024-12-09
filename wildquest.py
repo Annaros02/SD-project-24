@@ -118,6 +118,34 @@ def spawn_enemies(level, enemy_group, enemy_images, width, height):
         
     return enemy_group
 
+# Function to create the "Game Over" 
+def handle_game_over():
+    global game_over_triggered, running
+
+    # Marque l'état "Game Over"
+    game_over_triggered = True
+    running = False
+
+    # Stoppe la musique et joue le son "Game Over"
+    pygame.mixer.music.stop()
+    gameOverSound.play()
+    
+
+    # Affiche l'écran de "Game Over"
+    windowSurface.blit(background, (0, 0))
+    dead_player_image = pygame.image.load("dead_player.png").convert_alpha()
+    dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))
+    dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))
+    windowSurface.blit(dead_player_image, dead_player_rect)
+    drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
+    drawText('Press any key to quit the game!', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
+    pygame.display.update()
+
+    # Attends que le joueur appuie sur une touche
+    waitForPlayerToPressKey()
+    terminate()
+
+
 
 # ---- Initialize Pygame ----
 pygame.init()
@@ -189,6 +217,7 @@ tree_spawn_time = pygame.time.get_ticks()  # Timer
 pineapple_group = pygame.sprite.Group() 
 pineapple_spawn_time = pygame.time.get_ticks() #Timer 
 
+game_over_triggered = False #Indicate if the play is "Game Over"
 vision_range = 20
 counter = 0
 
@@ -350,56 +379,16 @@ while True:  # Main game loop
 # ---- Collisions ----
 
         # Detect collisions between trees and pplayer
-        if pygame.sprite.spritecollide(game.player, trees, False):  # Vérifie les collisions entre le joueur et les troncs
-            running = False  # Arrête la boucle principale
-            pygame.mixer.music.stop()  # Arrête la musique de fond
-            gameOverSound.play()  # Joue le son "Game Over"
-
-            # Affiche l'écran de "Game Over"
-            windowSurface.blit(background, (0, 0))
-
-            # Charge l'image du personnage mort
-            dead_player_image = pygame.image.load("dead_player.png").convert_alpha()
-            dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))  # Ajuste la taille si nécessaire
-
-            # Positionne l'image au centre vers le bas de l'écran
-            dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))  # Ajuste la hauteur si besoin
-            windowSurface.blit(dead_player_image, dead_player_rect)  # Affiche l'image du personnage mort
-
-            drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
-            drawText('Press any key to quit the game!', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
-            pygame.display.update()
-
-            # Attends que le joueur appuie sur une touche
-            waitForPlayerToPressKey()
-            gameOverSound.stop()
-            break  # Sort de la boucle principale pour réinitialiser le jeu
-
-        # Detect collisions between the player and pineapple     
-        if pygame.sprite.spritecollide(game.player, pineapple_group, False):  # False pour garder les ananas
-            running = False  # Arrêtez le jeu si le joueur touche un ananas
-            pygame.mixer.music.stop()  # Arrêter la musique de fond
-            gameOverSound.play()  # Jouer le son de Game Over
-
-            # Affiche l'écran de "Game Over"
-            windowSurface.blit(background, (0, 0))
-
-            # Charge l'image du personnage mort
-            dead_player_image = pygame.image.load("dead_player.png").convert_alpha()
-            dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))  # Ajuste la taille si nécessaire
-
-            # Positionne l'image au centre vers le bas de l'écran
-            dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))  # Ajuste la hauteur si besoin
-            windowSurface.blit(dead_player_image, dead_player_rect)  # Affiche l'image du personnage mort
-
-            drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
-            drawText('Press any key to quit the game!', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
-            pygame.display.update()
-
-            # Attends que le joueur appuie sur une touche
-            waitForPlayerToPressKey()
-            gameOverSound.stop()
-            break  # Sort de la boucle principale pour réinitialiser le jeu
+        if pygame.sprite.spritecollide(game.player, trees, False) and not game_over_triggered:  # Vérifie les collisions entre le joueur et les troncs
+            handle_game_over()
+        
+        # Detect collisions between enemies and player 
+        if pygame.sprite.spritecollide(game.player, enemies, False) and not game_over_triggered:
+            handle_game_over()
+        
+        # Detect collisions between pineapple and player 
+        if pygame.sprite.spritecollide(game.player, pineapple_group, False) and not game_over_triggered:
+            handle_game_over()
         
         # Detect collisions between projectiles and enemies
         collisions = pygame.sprite.groupcollide(projectiles, enemies, True, True)
@@ -408,33 +397,6 @@ while True:  # Main game loop
                 score += 100
                 pickUpSound.play()
         
-        # Detect collisions between enemies and player 
-        if pygame.sprite.spritecollide(game.player, enemies, False):  # False pour garder les ennemis
-            running = False  # Arrêter la boucle principale
-            pygame.mixer.music.stop()  # Arrêter la musique de fond
-            gameOverSound.play()  # Jouer le son "Game Over"
-    
-
-            # Affiche l'écran de "Game Over"
-            windowSurface.blit(background, (0, 0))
-
-            # Charge l'image du personnage mort
-            dead_player_image = pygame.image.load("dead_player.png").convert_alpha()
-            dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))  # Ajuste la taille si nécessaire
-
-            # Positionne l'image au centre vers le bas de l'écran
-            dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))  # Ajuste la hauteur si besoin
-            windowSurface.blit(dead_player_image, dead_player_rect)  # Affiche l'image du personnage mort
-
-            drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
-            drawText('Press any key to quit the game!', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
-            pygame.display.update()
-
-            # Attends que le joueur appuie sur une touche
-            waitForPlayerToPressKey()
-            gameOverSound.stop()
-            break  # Sort de la boucle principale pour réinitialiser le jeu
         
-        mainClock.tick(FSP) 
+        mainClock.tick(FSP)  #Control FSP
         pygame.display.flip()  # Refresh the screen
-
