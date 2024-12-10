@@ -44,7 +44,7 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
             self.velocityY = 0  # Reset vertical speed
 
     def take_damage(self, damage):
-        #Reduces player's health when hit.
+    #Reduces player's health when hit.
         self.health -= damage
         if self.health <= 0:  # If health reaches zero, the game is over
             self.health = 0 

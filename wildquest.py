@@ -230,7 +230,7 @@ pygame.display.update()
 
 # MAIN GAME LOOP
 while True:  # Main game loop
-# Set everything 
+# ---- Set everything ----
 
     # Set up the start of a new game
     score = 0  # Reset score for each game
@@ -324,23 +324,23 @@ while True:  # Main game loop
         if current_level > last_processed_level:
             if current_level == 1 and len(enemies) < 1: 
                 game.player.jumpStrength = -25
-                new_enemies = spawn_enemies(1, enemies, enemy_images, 150, 150)  # Level 1: 1 enemy
+                new_enemies = spawn_enemies(1, enemies, enemy_images, 150, 150)  # Level 1
                 enemies = new_enemies
              
             elif current_level == 2 and len(enemies) < 1: 
                 game.player.velocityX = 30
                 game.player.jumpStrength = -25
-                new_enemies = spawn_enemies(2, enemies, enemy_images, 150, 150)  # Level 2: 2 enemies
+                new_enemies = spawn_enemies(2, enemies, enemy_images, 150, 150)  # Level 2
                 enemies = new_enemies
                 
             elif current_level == 3 and len(enemies) < 1: 
                 game.player.velocityX = 35
-                new_enemies = spawn_enemies(3, enemies, enemy_images, 150, 150)  # Level 3: 3 enemies
+                new_enemies = spawn_enemies(3, enemies, enemy_images, 150, 150)  # Level 3
                 enemies = new_enemies 
             
             elif current_level == 4 and len(enemies) < 1: 
                 game.player.velocityX = 40
-                new_enemies = spawn_enemies(4, enemies, enemy_images, 150, 150)  # Level 4: 4 enemies
+                new_enemies = spawn_enemies(4, enemies, enemy_images, 150, 150)  # Level 4 
                 enemies = new_enemies  
 
         
@@ -354,7 +354,7 @@ while True:  # Main game loop
                     trees.add(new_tree)  # Add the tree to the group 
                     tree_spawn_time = current_time  # random delay between 3 and 5 seconds 
 
-        #Spawn pineapple (between level 1 to 3)
+        #Spawn pineapple (level 1 to 2)
         if level_manager.get_level() <= 2:
             if current_time - pineapple_spawn_time > random.randint(500, 1000) and len(pineapple_group) < 2:  # Limit to 2 pinaeapple 
                 pineapple = PineappleRain(WINDOWWIDTH, WINDOWHEIGHT)  # Initialize the new pineapple 
@@ -419,7 +419,7 @@ while True:  # Main game loop
         
                     if e.health <= 0:  # If health drops to 0
                         e.kill()  # Remove the enemy
-                        score += 100  # Add points for each enemy eliminated
+                        score += 50  # Add points for each enemy eliminated
                         pickUpSound.play()
       
         mainClock.tick(FSP)  #Control FSP
