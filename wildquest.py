@@ -347,7 +347,7 @@ while True:  # Main game loop
         current_time = pygame.time.get_ticks() # Get the current time once 
         
         # Spawn tree (level 3 to 4)
-        if level_manager.get_level() >= 3:
+        if level_manager.get_level() >= 2:
             if len(trees) < 1: 
                 if current_time - tree_spawn_time > random.randint(3000, 5000):  # Random delay between 3 and 5 seconds 
                     new_tree = TreeObstacle("tree.png", WINDOWWIDTH, WINDOWHEIGHT)  # Initialize the new tree
@@ -355,7 +355,7 @@ while True:  # Main game loop
                     tree_spawn_time = current_time  # random delay between 3 and 5 seconds 
 
         #Spawn pineapple (level 1 to 2)
-        if level_manager.get_level() <= 2:
+        if level_manager.get_level() <= 1:
             if current_time - pineapple_spawn_time > random.randint(500, 1000) and len(pineapple_group) < 2:  # Limit to 2 pinaeapple 
                 pineapple = PineappleRain(WINDOWWIDTH, WINDOWHEIGHT)  # Initialize the new pineapple 
                 pineapple_group.add(pineapple)  # Add pineapple to the group 
