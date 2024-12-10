@@ -151,9 +151,9 @@ def handle_game_over():
 pygame.init()
 
 # ---- Control FPS (frame per second) ----
-
 mainClock = pygame.time.Clock()  
 FSP = 30  
+
 # ---- GameFrameRateControl ----
 mainClock = pygame.time.Clock() 
 
@@ -166,7 +166,7 @@ pygame.display.set_caption("Wild Quest")  # Set the title of the window
 windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))  # Create the game window
 Title_design = pygame.font.SysFont('Copperplate', 62)  # Font for instructions and title
 Instruction_design = pygame.font.SysFont('Copperplate', 30)
-Score_design = pygame.font.SysFont('Copperplate', 32)
+Score_design = pygame.font.SysFont('Copperplate', 48)
 background = pygame.image.load("background2.png")  # Load the background image for the game
 
 # ---- Load sounds for game events such as game over, background music, and item collection ----
@@ -190,10 +190,10 @@ enemy_image_1 = pygame.image.load("enemy1.png")
  
 # ---- Initialize everything ----
 
-#Initialize the top score 
+# Initialize the top score 
 topScore = 0  
 
-## Create an instance of the Game class
+# Create an instance of the Game class
 game = Game()  
 
 # Set the initial state of the game
@@ -337,9 +337,9 @@ while True:  # Main game loop
                 enemies = new_enemies  
 
 
-# Obtenir le temps actuel une seule fois
+        # Obtenir le temps actuel une seule fois
         current_time = pygame.time.get_ticks()
-# Gestion du spawn des troncs (niveau 3 et supérieur)
+        # Spawn tree (level 4)
         if level_manager.get_level() >= 4:
             if len(trees) < 1: 
                 if current_time - tree_spawn_time > random.randint(3000, 5000):  # Délai aléatoire entre 3 et 5 secondes
@@ -347,8 +347,7 @@ while True:  # Main game loop
                     trees.add(new_tree)  # Ajoute le tronc au groupe
                     tree_spawn_time = current_time  # Réinitialise le timer pour les troncs
 
-# Gestion du spawn des ananas (niveau 2 et supérieur)
-      # Gestion du spawn des ananas (niveau 2 et supérieur)
+        #Spawn pineapple (between level 1 to 3)
         if level_manager.get_level() <= 3:
             if current_time - pineapple_spawn_time > random.randint(500, 1000) and len(pineapple_group) < 3:  # Limite à 5 ananas
                 pineapple = PineappleRain(WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un nouvel ananas
@@ -362,11 +361,9 @@ while True:  # Main game loop
         drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
         level_text_x = WINDOWWIDTH - 160  # Position near the right edge of the window
         level_text_y = 25  # Same vertical alignment as the score
-        drawText('Level: %s' % (level_manager.get_level()), Score_design, windowSurface, level_text_x, level_text_y, ORANGE)  # Draw level in the top right corner
+        drawText('Level: %s' % (level_manager.get_level()), Score_design, windowSurface, level_text_x, level_text_y, BLACK)  # Draw level in the top right corner
 
         pygame.display.update()  # Update display to show the score and level
-
-        
 
 
 # ---- Draw everything ----
@@ -374,6 +371,7 @@ while True:  # Main game loop
         windowSurface.blit(game.player.image, game.player.rect)  # Draw the player on the screen
         enemies.update()  # Update all enemies
         enemies.draw(windowSurface)  # Draw enemies on the screen
+        #life of enemies 
         for enemy in enemies:
             enemy.draw_health_bar(windowSurface)
         projectiles.update()
