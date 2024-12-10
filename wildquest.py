@@ -367,6 +367,8 @@ while True:  # Main game loop
         windowSurface.blit(game.player.image, game.player.rect)  # Draw the player on the screen
         enemies.update()  # Update all enemies
         enemies.draw(windowSurface)  # Draw enemies on the screen
+        for enemy in enemies:
+            enemy.draw_health_bar(windowSurface)
         projectiles.update()
         projectiles.draw(windowSurface)
         trees.update()  # Met à jour les positions des troncs
@@ -393,11 +395,21 @@ while True:  # Main game loop
         
         
         # Detect collisions between projectiles and enemies
-        collisions = pygame.sprite.groupcollide(projectiles, enemies, True, True)
+        # Collision entre projectiles et ennemis
+        collisions = pygame.sprite.groupcollide(projectiles, enemies, True, False)  # Les projectiles disparaissent, les ennemis restent
         if collisions:
-            for hit in collisions:
-                score += 100
-                pickUpSound.play()
+            for enemy in collisions.values():
+                for e in enemy:  # Dans le cas où plusieurs ennemis seraient touchés
+                    e.health -= 50  # Réduire la vie de 50%
+            
+                if e.health <= 50:  # Si la vie tombe à 50%
+                    e.speed += 3  # Augmentez leur vitesse (ou ajustez selon vos besoins)
+            
+                if e.health <= 0:  # Si la vie tombe à 0
+                    e.kill()  # Supprimez l'ennemi
+                    score += 100  # Ajoutez des points pour chaque ennemi éliminé
+                    pickUpSound.play()
+
             
         
         mainClock.tick(FSP)  #Control FSP
