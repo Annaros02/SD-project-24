@@ -340,6 +340,7 @@ while True:  # Main game loop
 
         # Obtenir le temps actuel une seule fois
         current_time = pygame.time.get_ticks()
+        
         # Spawn tree (level 4)
         if level_manager.get_level() >= 4:
             if len(trees) < 1: 
@@ -356,8 +357,7 @@ while True:  # Main game loop
                 pineapple_spawn_time = current_time  # Réinitialise le timer pour les ananas
         else: 
             pineapple_group.empty() 
-
-
+        
 # ---- Draw score with a background ----
         drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
         level_text_x = WINDOWWIDTH - 160  # Position near the right edge of the window
@@ -380,7 +380,7 @@ while True:  # Main game loop
         trees.draw(windowSurface)  # Dessine les troncs sur l’écran
         pineapple_group.update() # Mettre à jour les postions des ananas 
         pineapple_group.draw(windowSurface) # Dessiner les anans sur l'écran
-        game.player.draw_health_bar(windowSurface) # Draw Player's health bar 
+        game.player.draw_health_bar(windowSurface) # Dessine le coeur au-dessus du joeur 
 
         pygame.display.update()  
 

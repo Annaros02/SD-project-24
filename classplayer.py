@@ -15,6 +15,9 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
         self.jumpStrength = -25  # Initial upward force when jumping
         self.gravity = 1  # Gravity force applied to the player
         self.isJumping = False  # Track if the player is currently jumping
+        self.heart_image = pygame.image.load("heart.png")
+        self.heart_image = pygame.transform.smoothscale(self.heart_image, (50, 50))  # Ajustez la taille selon vos besoins
+
         
 
     def move_right(self):
@@ -47,15 +50,14 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
             self.health = 0 
             return True  # Indicate game over
         return False  # Indicate the player is still alive
-
-    def draw_health_bar(self, surface):
-        #Draws the player's health bar above their sprite.
-        bar_width = 100
-        bar_height = 10
-        fill = (self.health / self.max_health) * bar_width  # Calculate filled width
-        outline_rect = pygame.Rect(self.rect.x, self.rect.y - 15, bar_width, bar_height)  # Position above player
-        fill_rect = pygame.Rect(self.rect.x, self.rect.y - 15, fill, bar_height)
-        pygame.draw.rect(surface, (255, 0, 0), fill_rect)  # Red for health
-        pygame.draw.rect(surface, (255, 255, 255), outline_rect, 2)  # White border    
-            
     
+
+        
+    def draw_health_bar(self, surface):
+        # Dessine un coeur au-dessus du joueur si la santé est supérieur à 50% 
+        if self.health > 50:  # Affiche le cœur uniquement si la santé est supérieure à 50
+            heart_x = self.rect.x + self.rect.width // 2 - 15  # Centré horizontalement
+            heart_y = self.rect.y - 35  # Positionné au-dessus du joueur
+            surface.blit(self.heart_image, (heart_x, heart_y))
+
+        
