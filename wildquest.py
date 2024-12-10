@@ -419,7 +419,7 @@ while True:  # Main game loop
         
                     if e.health <= 0:  # If health drops to 0
                         e.kill()  # Remove the enemy
-                        score += 50  # Add points for each enemy eliminated
+                        score += 100 # Add points for each enemy eliminated
                         pickUpSound.play()
       
         mainClock.tick(FSP)  #Control FSP
