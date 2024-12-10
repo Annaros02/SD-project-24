@@ -173,6 +173,7 @@ background = pygame.image.load("background2.png")  # Load the background image f
 gameOverSound = pygame.mixer.Sound('gameover.wav')  # Load the game over sound
 pygame.mixer.music.load('Backgroundnoise.mp3')  # Load the background music
 pickUpSound = pygame.mixer.Sound("pickup.wav")
+heartLossSound = pygame.mixer.Sound("playerlosesheart.wav") 
 
 # ---- Load images for the starting screen ----
 start_background = pygame.image.load("background1.png")  # Load the start background image
@@ -391,20 +392,24 @@ while True:  # Main game loop
 
 # ---- Collisions ----
  
-        #Collision with tree
         if pygame.sprite.spritecollide(game.player, trees, True):  # Collision with a tree
-            if game.player.take_damage(50):  # Player takes 50 damage
-                handle_game_over()  # Trigger game over if health is 0
+            if game.player.take_damage(50):  # Player's health drops to 0%
+                handle_game_over()  # Display the Game Over screen
+            else:  # Player still has health remaining
+                heartLossSound.play()  # Play the heart loss sound
 
-        # Collision with pineapple
         if pygame.sprite.spritecollide(game.player, pineapple_group, True):  # Collision with a pineapple
-            if game.player.take_damage(50):  # Player takes 50 damage
-                handle_game_over()
+            if game.player.take_damage(50):  # Player's health drops to 0%
+                handle_game_over()  # Display the Game Over screen
+            else:  # Player still has health remaining
+                heartLossSound.play()  # Play the heart loss sound
 
-        # Collision with enemies 
         if pygame.sprite.spritecollide(game.player, enemies, True):  # Collision with an enemy
-            if game.player.take_damage(50):  # Player takes 50 damage
-                handle_game_over()
+            if game.player.take_damage(50):  # Player's health drops to 0%
+                handle_game_over()  # Display the Game Over screen
+            else:  # Player still has health remaining
+                heartLossSound.play()  # Play the heart loss sound
+
 
                
         # Detect collisions between projectiles and enemies
