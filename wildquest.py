@@ -288,12 +288,12 @@ while True:  # Main game loop
         if new_level > current_level:
             current_level = new_level  # Update the current level
             enemies.empty()  # Clear all enemies from the previous level
-            display_level_message(new_level)  # Display level-up message and pause
+            enemy_spawn_time = pygame.time.get_ticks() # Reset the timer to control enemy spawns for this level
 
-            # Reset the timer to control enemy spawns for this level
-            enemy_spawn_time = pygame.time.get_ticks()
+            # Check if the current level is the final level (4 in this case)
+            if current_level == 4:
+                display_level_message(current_level)  # Display the message for the final level
 
-            if current_level == 5:
                 # Final level completion logic
                 windowSurface.blit(background, (0, 0))
                 drawText("Congratulations!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 - 50, ORANGE)
@@ -302,6 +302,12 @@ while True:  # Main game loop
                 pygame.time.delay(5000)  # Pause to let the player see the message
                 running = False  # Stop the game loop
                 terminate()  # Exit the game
+            
+            else:
+                # Display the message for other (non-final) levels
+                display_level_message(new_level)
+        
+            
 
 # ---- Spawn ----
         # Spawn one enemy at a time based on the timer
