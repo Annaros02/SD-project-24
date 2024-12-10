@@ -33,10 +33,8 @@ class Enemy(pygame.sprite.Sprite):
         # Initial health of the enemy
         self.health = 100 
 
-    def update(self):
-        
-        #Update the enemy's position and remove it if it moves off-screen.
-        
+    def update(self):      
+        #Update the enemy's position and remove it if it moves off-screen.      
         self.rect.x -= self.speed  # Move the enemy to the left
         
         # Remove the enemy if it moves off the left side of the screen
@@ -44,18 +42,18 @@ class Enemy(pygame.sprite.Sprite):
             self.kill()
 
 
-    def draw_health_bar(self, surface):
     
-    # Barre de santé (rouge par défaut)
+    def draw_health_bar(self, surface):
+        # Health bar (red by default)
         BAR_WIDTH = 40
         BAR_HEIGHT = 5
         bar_x = self.rect.centerx - BAR_WIDTH // 2
-        bar_y = self.rect.y - 10  # Position au-dessus de l'ennemi
-    
-        health_ratio = self.health / 100  # Pourcentage de vie restante
+        bar_y = self.rect.y - 10  # Position above the enemy
+
+        health_ratio = self.health / 100  # Percentage of remaining health
         health_bar_width = int(BAR_WIDTH * health_ratio)
-    
-        # Dessiner une barre rouge (fond)
+
+        # Draw a red bar (background)
         pygame.draw.rect(surface, (255, 0, 0), (bar_x, bar_y, BAR_WIDTH, BAR_HEIGHT))
-         # Dessiner une barre verte (vie restante)
+        # Draw a green bar (remaining health)
         pygame.draw.rect(surface, (0, 255, 0), (bar_x, bar_y, health_bar_width, BAR_HEIGHT))

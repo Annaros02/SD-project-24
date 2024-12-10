@@ -122,16 +122,16 @@ def spawn_enemies(level, enemy_group, enemy_images, width, height):
 def handle_game_over():
     global game_over_triggered, running
 
-    # Marque l'état "Game Over"
+    # Mark the "Game Over" state 
     game_over_triggered = True
     running = False
 
-    # Stoppe la musique et joue le son "Game Over"
+    # Stop the music and play the song "Game Over"
     pygame.mixer.music.stop()
     gameOverSound.play()
     
 
-    # Affiche l'écran de "Game Over"
+    # Display the "Game Over" screen
     windowSurface.blit(background, (0, 0))
     dead_player_image = pygame.image.load("dead_player.png").convert_alpha()
     dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))
@@ -141,7 +141,7 @@ def handle_game_over():
     drawText('Press any key to quit the game!', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
     pygame.display.update()
 
-    # Attends que le joueur appuie sur une touche
+    # Wait for player to press key 
     waitForPlayerToPressKey()
     terminate()
 
@@ -337,24 +337,23 @@ while True:  # Main game loop
                 new_enemies = spawn_enemies(4, enemies, enemy_images, 150, 150)  # Level 4: 4 enemies
                 enemies = new_enemies  
 
-
-        # Obtenir le temps actuel une seule fois
-        current_time = pygame.time.get_ticks()
         
-        # Spawn tree (level 4)
-        if level_manager.get_level() >= 4:
+        current_time = pygame.time.get_ticks() # Get the current time once 
+        
+        # Spawn tree (level 3 to 4)
+        if level_manager.get_level() >= 3:
             if len(trees) < 1: 
-                if current_time - tree_spawn_time > random.randint(3000, 5000):  # Délai aléatoire entre 3 et 5 secondes
-                    new_tree = TreeObstacle("tree.png", WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un nouveau tronc
-                    trees.add(new_tree)  # Ajoute le tronc au groupe
-                    tree_spawn_time = current_time  # Réinitialise le timer pour les troncs
+                if current_time - tree_spawn_time > random.randint(3000, 5000):  # Random delay between 3 and 5 seconds 
+                    new_tree = TreeObstacle("tree.png", WINDOWWIDTH, WINDOWHEIGHT)  # Initialize the new tree
+                    trees.add(new_tree)  # Add the tree to the group 
+                    tree_spawn_time = current_time  # random delay between 3 and 5 seconds 
 
         #Spawn pineapple (between level 1 to 3)
-        if level_manager.get_level() <= 3:
-            if current_time - pineapple_spawn_time > random.randint(500, 1000) and len(pineapple_group) < 3:  # Limite à 5 ananas
-                pineapple = PineappleRain(WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un nouvel ananas
-                pineapple_group.add(pineapple)  # Ajoute l'ananas au groupe
-                pineapple_spawn_time = current_time  # Réinitialise le timer pour les ananas
+        if level_manager.get_level() <= 2:
+            if current_time - pineapple_spawn_time > random.randint(500, 1000) and len(pineapple_group) < 2:  # Limit to 2 pinaeapple 
+                pineapple = PineappleRain(WINDOWWIDTH, WINDOWHEIGHT)  # Initialize the new pineapple 
+                pineapple_group.add(pineapple)  # Add pineapple to the group 
+                pineapple_spawn_time = current_time  # Reste the timer for the pineapples 
         else: 
             pineapple_group.empty() 
         
@@ -376,11 +375,11 @@ while True:  # Main game loop
             enemy.draw_health_bar(windowSurface) #Draw enemy's health bar 
         projectiles.update()
         projectiles.draw(windowSurface)
-        trees.update()  # Met à jour les positions des troncs
-        trees.draw(windowSurface)  # Dessine les troncs sur l’écran
-        pineapple_group.update() # Mettre à jour les postions des ananas 
-        pineapple_group.draw(windowSurface) # Dessiner les anans sur l'écran
-        game.player.draw_health_bar(windowSurface) # Dessine le coeur au-dessus du joeur 
+        trees.update()  # Updates the positions of the tree trunks
+        trees.draw(windowSurface)  # Draws the tree trunks on the screen
+        pineapple_group.update()  # Updates the positions of the pineapples
+        pineapple_group.draw(windowSurface)  # Draws the pineapples on the screen
+        game.player.draw_health_bar(windowSurface)  # Draws the heart above the player
 
         pygame.display.update()  
 
@@ -403,21 +402,19 @@ while True:  # Main game loop
 
                
         # Detect collisions between projectiles and enemies
-        collisions = pygame.sprite.groupcollide(projectiles, enemies, True, False)  # Les projectiles disparaissent, les ennemis restent
+        collisions = pygame.sprite.groupcollide(projectiles, enemies, True, False)  # Projectiles disappear, enemies remain
         if collisions:
             for enemy in collisions.values():
-                for e in enemy:  # Dans le cas où plusieurs ennemis seraient touchés
-                    e.health -= 50  # Réduire la vie de 50%
-            
-                if e.health <= 50:  # Si la vie tombe à 50%
-                    e.speed += 3  # Augmentez leur vitesse (ou ajustez selon vos besoins)
-            
-                if e.health <= 0:  # Si la vie tombe à 0
-                    e.kill()  # Supprimez l'ennemi
-                    score += 100  # Ajoutez des points pour chaque ennemi éliminé
-                    pickUpSound.play()
-
-            
+                for e in enemy:  # In case multiple enemies are hit
+                    e.health -= 50  # Reduce health by 50%
         
+                    if e.health <= 50:  # If health drops to 50%
+                        e.speed += 3  # Increase their speed (or adjust as needed)
+        
+                    if e.health <= 0:  # If health drops to 0
+                        e.kill()  # Remove the enemy
+                        score += 100  # Add points for each enemy eliminated
+                        pickUpSound.play()
+      
         mainClock.tick(FSP)  #Control FSP
         pygame.display.flip()  # Refresh the screen

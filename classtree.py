@@ -4,21 +4,21 @@ import random
 class TreeObstacle(pygame.sprite.Sprite):
     def __init__(self, image_path, window_width, ground_level):
         super().__init__()
-        # Charge l'image du tronc
+        # Load the tree trunk image
         self.image = pygame.image.load(image_path).convert_alpha()
-        # Redimensionne le tronc
-        self.image = pygame.transform.smoothscale(self.image, (150, 150))  # Taille ajustée
+        # Resize the tree trunk
+        self.image = pygame.transform.smoothscale(self.image, (150, 150))  # Adjusted size
         self.rect = self.image.get_rect()
-        # Position initiale à droite de l'écran
+        # Initial position at the right of the screen
         self.rect.x = window_width
-        # Aligné au sol
+        # Aligned with the ground
         self.rect.y = ground_level - self.rect.height
-        # Vitesse aléatoire
+        # Random speed
         self.speed = random.randint(5, 10)
 
     def update(self):
-        # Déplace le tronc vers la gauche
+        # Move the tree trunk to the left
         self.rect.x -= self.speed
-        # Si le tronc sort de l'écran, supprime-le
+        # If the tree trunk goes off-screen, remove it
         if self.rect.right < 0:
             self.kill()

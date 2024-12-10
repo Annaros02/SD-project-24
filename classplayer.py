@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
         self.rect.x += self.velocityX
 
     def move_left(self):
-        if self.rect.x > 0:  # Empêche de dépasser la bordure gauche
+        if self.rect.x > 0:  # Prevent exceeding the left border 
             self.rect.x -= self.velocityX
 
 
@@ -54,10 +54,10 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
 
         
     def draw_health_bar(self, surface):
-        # Dessine un coeur au-dessus du joueur si la santé est supérieur à 50% 
-        if self.health > 50:  # Affiche le cœur uniquement si la santé est supérieure à 50
-            heart_x = self.rect.x + self.rect.width // 2 - 15  # Centré horizontalement
-            heart_y = self.rect.y - 35  # Positionné au-dessus du joueur
+    # Draws a heart above the player if health is above 50%
+        if self.health > 50:  # Display the heart only if health is above 50
+            heart_x = self.rect.x + self.rect.width // 2 - 15  # Centered horizontally
+            heart_y = self.rect.y - 35  # Positioned above the player
             surface.blit(self.heart_image, (heart_x, heart_y))
 
         
