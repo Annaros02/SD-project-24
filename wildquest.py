@@ -98,8 +98,8 @@ def display_level_message(level):
     # Update the display
     pygame.display.update()
     
-    # Pause for 3 seconds
-    pygame.time.delay(3000)
+    # Pause for 2 seconds
+    pygame.time.delay(2000)
 
 # Function to spawn enemies 
 def spawn_enemies(level, enemy_group, enemy_images, width, height):
