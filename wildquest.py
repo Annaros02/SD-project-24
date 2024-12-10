@@ -336,25 +336,26 @@ while True:  # Main game loop
                 new_enemies = spawn_enemies(4, enemies, enemy_images, 150, 150)  # Level 4: 4 enemies
                 enemies = new_enemies  
 
-# ---- Spawn ----
+
 # Obtenir le temps actuel une seule fois
         current_time = pygame.time.get_ticks()
 # Gestion du spawn des troncs (niveau 3 et supérieur)
         if level_manager.get_level() >= 4:
-            if current_time - tree_spawn_time > random.randint(3000, 5000):  # Délai aléatoire entre 3 et 5 secondes
-                new_tree = TreeObstacle("tree.png", WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un nouveau tronc
-                trees.add(new_tree)  # Ajoute le tronc au groupe
-                tree_spawn_time = current_time  # Réinitialise le timer pour les troncs
+            if len(trees) < 1: 
+                if current_time - tree_spawn_time > random.randint(3000, 5000):  # Délai aléatoire entre 3 et 5 secondes
+                    new_tree = TreeObstacle("tree.png", WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un nouveau tronc
+                    trees.add(new_tree)  # Ajoute le tronc au groupe
+                    tree_spawn_time = current_time  # Réinitialise le timer pour les troncs
 
 # Gestion du spawn des ananas (niveau 2 et supérieur)
       # Gestion du spawn des ananas (niveau 2 et supérieur)
-        if level_manager.get_level() >= 3:
-            if current_time - pineapple_spawn_time > random.randint(500, 1000) and len(pineapple_group) < 2:  # Limite à 5 ananas
+        if level_manager.get_level() <= 3:
+            if current_time - pineapple_spawn_time > random.randint(500, 1000) and len(pineapple_group) < 3:  # Limite à 5 ananas
                 pineapple = PineappleRain(WINDOWWIDTH, WINDOWHEIGHT)  # Initialise un nouvel ananas
                 pineapple_group.add(pineapple)  # Ajoute l'ananas au groupe
                 pineapple_spawn_time = current_time  # Réinitialise le timer pour les ananas
-
-
+        else: 
+            pineapple_group.empty() 
 
 
 # ---- Draw score with a background ----
