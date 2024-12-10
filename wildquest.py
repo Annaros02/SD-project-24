@@ -320,18 +320,18 @@ while True:  # Main game loop
                 new_enemies = spawn_enemies(1, enemies, enemy_images, 150, 150)  # Level 1: 1 enemy
                 enemies = new_enemies
              
-            elif current_level == 2 and len(enemies) < 2: 
+            elif current_level == 2 and len(enemies) < 1: 
                 game.player.velocityX = 30
                 game.player.jumpStrength = -25
                 new_enemies = spawn_enemies(2, enemies, enemy_images, 150, 150)  # Level 2: 2 enemies
                 enemies = new_enemies
                 
-            elif current_level == 3 and len(enemies) < 3: 
+            elif current_level == 3 and len(enemies) < 1: 
                 game.player.velocityX = 35
                 new_enemies = spawn_enemies(3, enemies, enemy_images, 150, 150)  # Level 3: 3 enemies
                 enemies = new_enemies 
             
-            elif current_level == 4 and len(enemies) < 4: 
+            elif current_level == 4 and len(enemies) < 1: 
                 game.player.velocityX = 40
                 new_enemies = spawn_enemies(4, enemies, enemy_images, 150, 150)  # Level 4: 4 enemies
                 enemies = new_enemies  
@@ -377,18 +377,20 @@ while True:  # Main game loop
         pygame.display.update()  
 
 # ---- Collisions ----
-
-        # Detect collisions between trees and pplayer
+ 
+       # Detect collisions between trees and pplayer
         if pygame.sprite.spritecollide(game.player, trees, False) and not game_over_triggered:  # Vérifie les collisions entre le joueur et les troncs
+            handle_game_over()
+        
+        # Detect collisions between pineapple and player 
+        if pygame.sprite.spritecollide(game.player, pineapple_group, False) and not game_over_triggered:
             handle_game_over()
         
         # Detect collisions between enemies and player 
         if pygame.sprite.spritecollide(game.player, enemies, False) and not game_over_triggered:
             handle_game_over()
         
-        # Detect collisions between pineapple and player 
-        if pygame.sprite.spritecollide(game.player, pineapple_group, False) and not game_over_triggered:
-            handle_game_over()
+        
         
         # Detect collisions between projectiles and enemies
         collisions = pygame.sprite.groupcollide(projectiles, enemies, True, True)
@@ -396,7 +398,7 @@ while True:  # Main game loop
             for hit in collisions:
                 score += 100
                 pickUpSound.play()
-        
+            
         
         mainClock.tick(FSP)  #Control FSP
         pygame.display.flip()  # Refresh the screen
