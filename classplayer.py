@@ -18,7 +18,6 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
         self.heart_image = pygame.image.load("heart.png")
         self.heart_image = pygame.transform.smoothscale(self.heart_image, (50, 50))  # Ajustez la taille selon vos besoins
 
-        
 
     def move_right(self):
         #Always allow horizontal movement 
@@ -27,7 +26,6 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
     def move_left(self):
         if self.rect.x > 0:  # Prevent exceeding the left border 
             self.rect.x -= self.velocityX
-
 
     def jump(self):
         if not self.isJumping:  # Only jump if the player is not already jumping
@@ -50,8 +48,6 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
             self.health = 0 
             return True  # Indicate game over
         return False  # Indicate the player is still alive
-    
-
         
     def draw_health_bar(self, surface):
     # Draws a heart above the player if health is above 50%
