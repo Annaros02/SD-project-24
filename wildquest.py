@@ -389,6 +389,11 @@ while True:  # Main game loop
         pineapple_group.draw(windowSurface)  # Draws the pineapples on the screen
         game.player.draw_health_bar(windowSurface)  # Draws the heart above the player
 
+        # Update projectiles and remove those that are out of the screen
+        for projectile in projectiles:
+            if projectile.rect.right < 0 or projectile.rect.left > WINDOWWIDTH:
+                projectiles.remove(projectile)  # Remove the projectile if it goes out of bounds
+
 
         # ---- Draw score with a background ----
         drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
@@ -419,22 +424,22 @@ while True:  # Main game loop
             else:  # Player still has health remaining
                 heartLossSound.play()  # Play the heart loss sound
 
-
                
+        
         # Detect collisions between projectiles and enemies
         collisions = pygame.sprite.groupcollide(projectiles, enemies, True, False)  # Projectiles disappear, enemies remain
         if collisions:
-            for enemy in collisions.values():
-                for e in enemy:  # In case multiple enemies are hit
-                    e.health -= 50  # Reduce health by 50%
-        
-                    if e.health <= 50:  # If health drops to 50%
-                        e.speed += 3  # Increase their speed (or adjust as needed)
-        
-                    if e.health <= 0:  # If health drops to 0
-                        e.kill()  # Remove the enemy
-                        score += 100 # Add points for each enemy eliminated
-                        pickUpSound.play()
+            for projectile, hit_enemies in collisions.items():
+                for enemy in hit_enemies:  # In case multiple enemies are hit
+                    if (0 <= enemy.rect.left <= WINDOWWIDTH) and (0 <= enemy.rect.right <= WINDOWWIDTH):
+                        enemy.health -= 50  # Reduce health by 50%
+                        if enemy.health <= 50:  # If health drops to 50%
+                            enemy.speed += 3  # Increase their speed (or adjust as needed)
+                        if enemy.health <= 0:  # If health drops to 0
+                            enemy.kill()  # Remove the enemy
+                            score += 50  # Add points for each enemy eliminated
+                            pickUpSound.play()
+
       
         mainClock.tick(FSP)  #Control FSP
         pygame.display.flip()  # Refresh the screen
