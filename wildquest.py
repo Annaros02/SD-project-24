@@ -89,22 +89,46 @@ def display_level_message(level):
     
     windowSurface.blit(background, (0, 0)) 
 
-    if level ==4: 
-        smaller_font = pygame.font.SysFont('Copperplate', 50)  # Even smaller font size
+    if level == 4: 
+        smaller_font = pygame.font.SysFont('Copperplate', 50)  # Font size for the final level message
         message_line1 = "Final Level:"
         message_line2 = "You have reached your full evolution"
-        color = BLACK  # Use red for final level message
 
-        # Draw the first line at the center of the screen
-        drawText(message_line1, smaller_font, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 2) - 40, color)
-        # Draw the second line slightly below the first
-        drawText(message_line2, smaller_font, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 2) + 20, color)
+        # Draw the first line at the center of the screen with white text on a green background
+        drawTextWithBackground(
+            message_line1, 
+            smaller_font, 
+            windowSurface, 
+            WINDOWWIDTH // 2, 
+            (WINDOWHEIGHT // 2) - 40, 
+            WHITE,  # Text color (white)
+            GREEN   # Background color (green)
+        )
 
+        # Draw the second line slightly below the first with white text on a green background
+        drawTextWithBackground(
+            message_line2, 
+            smaller_font, 
+            windowSurface, 
+            WINDOWWIDTH // 2, 
+            (WINDOWHEIGHT // 2) + 20, 
+            WHITE,  # Text color (white)
+            GREEN   # Background color (green)
+        )
     else:
         # Generic level-up message for all other levels
         message = f"You have reached Level {level}!"
-        color = BLACK # Green color for other levels
-        drawText(message, Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2, color)
+
+        # Draw the message with white text on a green background
+        drawTextWithBackground(
+            message, 
+            Title_design, 
+            windowSurface, 
+            WINDOWWIDTH // 2, 
+            WINDOWHEIGHT // 2, 
+            WHITE,  # Text color (white)
+            GREEN   # Background color (green)
+        )
     
     # Update the display
     pygame.display.update()
@@ -308,8 +332,8 @@ while True:  # Main game loop
 
                 # Final level completion logic
                 windowSurface.blit(background, (0, 0))
-                drawText("Congratulations!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 - 50, BLACK)
-                drawText("You have completed the game!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 + 50, BLACK)
+                drawTextWithBackground("Congratulations!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 - 50, WHITE, GREEN)
+                drawTextWithBackground("You have completed the game!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 + 50, WHITE, GREEN)
                 pygame.display.update()
                 pygame.time.delay(5000)  # Pause to let the player see the message
                 running = False  # Stop the game loop
@@ -440,7 +464,7 @@ while True:  # Main game loop
                             enemy.speed += 3  # Increase their speed (or adjust as needed)
                         if enemy.health <= 0:  # If health drops to 0
                             enemy.kill()  # Remove the enemy
-                            score += 500  # Add points for each enemy eliminated
+                            score += 100  # Add points for each enemy eliminated
                             pickUpSound.play()
 
       
