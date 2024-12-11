@@ -84,9 +84,12 @@ def display_level_message(level):
     # Clear the screen and display the background
     windowSurface.blit(background, (0, 0))
     
-    if level == 4:
-        # Special message for level 4 with smaller font
-      
+    if level > 4: #Ensure the level does not exceed 4 
+        return 
+    
+    windowSurface.blit(background, (0, 0)) 
+
+    if level ==4: 
         smaller_font = pygame.font.SysFont('Copperplate', 50)  # Even smaller font size
         message_line1 = "Final Level:"
         message_line2 = "You have reached your full evolution"
@@ -437,7 +440,7 @@ while True:  # Main game loop
                             enemy.speed += 3  # Increase their speed (or adjust as needed)
                         if enemy.health <= 0:  # If health drops to 0
                             enemy.kill()  # Remove the enemy
-                            score += 100  # Add points for each enemy eliminated
+                            score += 500  # Add points for each enemy eliminated
                             pickUpSound.play()
 
       
