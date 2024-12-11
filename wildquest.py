@@ -45,7 +45,7 @@ def show_start_screen():
     # Draw the starting background
     windowSurface.blit(start_background, (0, 0))  # Fill the screen with the starting background image
     # Draw the start character image on top of the background
-    start_image_rect = start_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT // 1.3))  # Center the character image
+    start_image_rect = start_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT // 1.25))  # Center the character image
     windowSurface.blit(start_image, start_image_rect)  # Draw the character image
 
     
@@ -54,7 +54,15 @@ def show_start_screen():
     drawText('Press SPACE to Jump !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 100, BLACK)
     drawText('Press RIGHT or LEFT Arrow to Move !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 150, BLACK)
     drawText('Press B to Launch a Projectile !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 200, BLACK)
-    drawText('Press a key to start !', Instruction_design, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 4) + 250, GREEN)  # Positioned below all instructions
+    drawTextWithBackground(
+        'Press a key to start!',  # The text to display
+        Instruction_design,  # The font used
+        windowSurface,  # The surface where the text is drawn
+        WINDOWWIDTH // 2,  # X position, centered on the screen
+        (WINDOWHEIGHT // 4) + 250,  # Y position, below all instructions
+        WHITE,  # Text color
+        GREEN   # Background color for better visibility
+    )
 
 
     pygame.display.update()  # Update the screen
@@ -363,14 +371,7 @@ while True:  # Main game loop
                 pineapple_spawn_time = current_time  # Reste the timer for the pineapples 
         else: 
             pineapple_group.empty() 
-        
-# ---- Draw score with a background ----
-        drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
-        level_text_x = WINDOWWIDTH - 160  # Position near the right edge of the window
-        level_text_y = 25  # Same vertical alignment as the score
-        drawText('Level: %s' % (level_manager.get_level()), Score_design, windowSurface, level_text_x, level_text_y, BLACK)  # Draw level in the top right corner
 
-        pygame.display.update()  # Update display to show the score and level
 
 
 # ---- Draw everything ----
@@ -388,7 +389,15 @@ while True:  # Main game loop
         pineapple_group.draw(windowSurface)  # Draws the pineapples on the screen
         game.player.draw_health_bar(windowSurface)  # Draws the heart above the player
 
-        pygame.display.update()  
+
+        # ---- Draw score with a background ----
+        drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
+        level_text_x = WINDOWWIDTH - 160  # Position near the right edge of the window
+        level_text_y = 25  # Same vertical alignment as the score
+        drawText('Level: %s' % (level_manager.get_level()), Score_design, windowSurface, level_text_x, level_text_y, BLACK)  # Draw level in the top right corner
+
+        pygame.display.update()  # Update display to show the score and level
+ 
 
 # ---- Collisions ----
  
