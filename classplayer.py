@@ -5,7 +5,7 @@ class Player(pygame.sprite.Sprite):  # Class representing the player character
         super().__init__()  # Call the Sprite initializer
         self.health = 100  # Initial player health
         self.max_health = 100  # Maximum player health
-        self.velocityX = 5  # Horizontal movement speed
+        self.velocityX = 6  # Horizontal movement speed
         self.image = pygame.image.load("player.png")  # Load player image
         self.image = pygame.transform.smoothscale(self.image, (160, 175))  # Scale player image
         self.rect = self.image.get_rect()  # Get rectangle for positioning
