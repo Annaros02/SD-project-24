@@ -87,10 +87,10 @@ def display_level_message(level):
     if level == 4:
         # Special message for level 4 with smaller font
       
-        smaller_font = pygame.font.SysFont('Copperplate', 36)  # Even smaller font size
+        smaller_font = pygame.font.SysFont('Copperplate', 50)  # Even smaller font size
         message_line1 = "Final Level:"
         message_line2 = "You have reached your full evolution"
-        color = ORANGE  # Use red for final level message
+        color = BLACK  # Use red for final level message
 
         # Draw the first line at the center of the screen
         drawText(message_line1, smaller_font, windowSurface, WINDOWWIDTH // 2, (WINDOWHEIGHT // 2) - 40, color)
@@ -300,13 +300,13 @@ while True:  # Main game loop
             enemy_spawn_time = pygame.time.get_ticks() # Reset the timer to control enemy spawns for this level
 
             # Check if the current level is the final level (4 in this case)
-            if current_level == 4:
+            if current_level == 5:
                 display_level_message(current_level)  # Display the message for the final level
 
                 # Final level completion logic
                 windowSurface.blit(background, (0, 0))
-                drawText("Congratulations!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 - 50, ORANGE)
-                drawText("You have completed the game!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 + 50, ORANGE)
+                drawText("Congratulations!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 - 50, BLACK)
+                drawText("You have completed the game!", Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 2 + 50, BLACK)
                 pygame.display.update()
                 pygame.time.delay(5000)  # Pause to let the player see the message
                 running = False  # Stop the game loop
@@ -437,7 +437,7 @@ while True:  # Main game loop
                             enemy.speed += 3  # Increase their speed (or adjust as needed)
                         if enemy.health <= 0:  # If health drops to 0
                             enemy.kill()  # Remove the enemy
-                            score += 50  # Add points for each enemy eliminated
+                            score += 100  # Add points for each enemy eliminated
                             pickUpSound.play()
 
       
