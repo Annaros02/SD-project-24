@@ -390,7 +390,7 @@ while True:  # Main game loop
                     trees.add(new_tree)  # Add the tree to the group 
                     tree_spawn_time = current_time  # random delay between 3 and 5 seconds 
 
-        #Spawn pineapple (level 1 to 2)
+        #Spawn pineapple (level 1)
         if level_manager.get_level() <= 1:
             if current_time - pineapple_spawn_time > random.randint(500, 1000) and len(pineapple_group) < 2:  # Limit to 2 pinaeapple 
                 pineapple = PineappleRain(WINDOWWIDTH, WINDOWHEIGHT)  # Initialize the new pineapple 
