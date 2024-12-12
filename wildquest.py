@@ -90,7 +90,7 @@ def display_level_message(level):
     windowSurface.blit(background, (0, 0)) 
 
     if level == 4: 
-        smaller_font = pygame.font.SysFont('Copperplate', 50)  # Font size for the final level message
+        smaller_font = pygame.font.SysFont('Copperplate', 40)  # Font size for the final level message
         message_line1 = "Final Level:"
         message_line2 = "You have reached your full evolution"
 
@@ -172,7 +172,7 @@ def handle_game_over():
     dead_player_image = pygame.transform.smoothscale(dead_player_image, (300, 300))
     dead_player_rect = dead_player_image.get_rect(center=(WINDOWWIDTH // 2, WINDOWHEIGHT - 150))
     windowSurface.blit(dead_player_image, dead_player_rect)
-    drawText('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, BLACK)
+    drawTextWithBackground('GAME OVER', Title_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 4, WHITE, GREEN)
     drawText('Press any key to quit the game!', Score_design, windowSurface, WINDOWWIDTH // 2, WINDOWHEIGHT // 3, BLACK)
     pygame.display.update()
 
@@ -201,7 +201,7 @@ pygame.display.set_caption("Wild Quest")  # Set the title of the window
 windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))  # Create the game window
 Title_design = pygame.font.SysFont('Copperplate', 62)  # Font for instructions and title
 Instruction_design = pygame.font.SysFont('Copperplate', 30)
-Score_design = pygame.font.SysFont('Copperplate', 48)
+Score_design = pygame.font.SysFont('Copperplate', 40)
 background = pygame.image.load("background2.png")  # Load the background image for the game
 
 # ---- Load sounds for game events such as game over, background music, and item collection ----
@@ -364,18 +364,18 @@ while True:  # Main game loop
                 enemies = new_enemies
              
             elif current_level == 2 and len(enemies) < 1: 
-                game.player.velocityX = 30
+                game.player.velocityX = 10
                 game.player.jumpStrength = -25
                 new_enemies = spawn_enemies(2, enemies, enemy_images, 150, 150)  # Level 2
                 enemies = new_enemies
                 
             elif current_level == 3 and len(enemies) < 1: 
-                game.player.velocityX = 35
+                game.player.velocityX = 14
                 new_enemies = spawn_enemies(3, enemies, enemy_images, 150, 150)  # Level 3
                 enemies = new_enemies 
             
             elif current_level == 4 and len(enemies) < 1: 
-                game.player.velocityX = 40
+                game.player.velocityX = 18
                 new_enemies = spawn_enemies(4, enemies, enemy_images, 150, 150)  # Level 4 
                 enemies = new_enemies  
 
@@ -423,10 +423,10 @@ while True:  # Main game loop
 
 
         # ---- Draw score with a background ----
-        drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, BLACK)
+        drawTextWithBackground('Score: %s' % (score), Score_design, windowSurface, 160, 25, WHITE, GREEN)
         level_text_x = WINDOWWIDTH - 160  # Position near the right edge of the window
         level_text_y = 25  # Same vertical alignment as the score
-        drawText('Level: %s' % (level_manager.get_level()), Score_design, windowSurface, level_text_x, level_text_y, BLACK)  # Draw level in the top right corner
+        drawTextWithBackground('Level: %s' % (level_manager.get_level()), Score_design, windowSurface, level_text_x, level_text_y, WHITE, GREEN)  # Draw level in the top right corner
 
         pygame.display.update()  # Update display to show the score and level
  
