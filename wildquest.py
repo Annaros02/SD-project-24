@@ -464,7 +464,7 @@ while True:  # Main game loop
                             enemy.speed += 3  # Increase their speed (or adjust as needed)
                         if enemy.health <= 0:  # If health drops to 0
                             enemy.kill()  # Remove the enemy
-                            score += 100  # Add points for each enemy eliminated
+                            score += 50   # Add points for each enemy eliminated
                             pickUpSound.play()
 
       

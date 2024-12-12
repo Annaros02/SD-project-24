@@ -2,7 +2,7 @@ import pygame
 import random
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemyimage, width, height, base_speed=6, speed_variation=3):
+    def __init__(self, enemyimage, width, height, base_speed=7, speed_variation=3):
         
         #Initialize the enemy sprite.
         
